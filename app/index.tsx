@@ -9,25 +9,60 @@ const ROW_SIZE = 2;
 const ROWS = 3
 
 enum Color {
-  Black = "black",
   White = "white",
+  Black = "black",
 }
 
-let buttonArray: Array<Color> = new Array(6).fill(Color.White)
+const dotsToText: Record<string,string> = {
+  '100000': 'a',
+  '101000': 'b',
+  '110000': 'c',
+  '110100': 'd',
+  '100100': 'e',
+  '111000': 'f',
+  '111100': 'g',
+  '101100': 'h',
+  '011000': 'i',
+  '011100': 'j',
+  '100010': 'k',
+  '101010': 'l',
+  '110010': 'm',
+  '110110': 'n',
+  '100110': 'o',
+  '111010': 'p',
+  '111110': 'q',
+  '101110': 'r',
+  '011010': 's',
+  '011110': 't',
+  '100011': 'u',
+  '101011': 'v',
+  '011101': 'w',
+  '110011': 'x',
+  '110111': 'y',
+  '100111': 'z',
+  };
 
 export default function HomeScreen() {
-  const [buttons, onButtonsChanged] = useState(buttonArray);
+  const [buttons, onButtonsChanged] = useState(new Array(6).fill(Color.White));
+  const [textResult, setTextResult] = useState('');
 
   const handlePress = (idx: number) => {
-    const newButtons = [...buttons]
+    const newButtons = [...buttons];
     newButtons[idx] = newButtons[idx] === Color.White ? Color.Black : Color.White;
     onButtonsChanged(newButtons);
 
-    console.log("Pressed item ID:", idx);
-    console.log("Button color:", newButtons[idx]);
-    console.log(newButtons);
+    setTextResult(buttonsToChar(newButtons));
+
+    // console.log("Pressed item ID:", idx);
+    // console.log("Button color:", newButtons[idx]);
+    // console.log(newButtons);
   };
 
+  /**
+   * 
+   * @param row 
+   * @returns 
+   */
   const createRow = (row: number) => {
     const idx = row * ROW_SIZE;
     return (<SafeAreaView style={{flexDirection: 'row'}}>
@@ -46,13 +81,29 @@ export default function HomeScreen() {
           </SafeAreaView>)
   }
 
+  /**
+   * 
+   * @param buttonArr 
+   * @returns 
+   */
+  const buttonsToChar = (buttonArr: Array<Color>):string => {
+
+    let binaryDots: string = buttonArr.map(n => Object.values(Color).indexOf(n)).join('');
+    console.log("Binary dots:", binaryDots);
+    return dotsToText[binaryDots];
+  };
+  
   return (
     <SafeAreaProvider>
         <SafeAreaView style={{flexDirection: 'column', alignItems: 'center' , top: 50}}>
-
+          
           {createRow(0)}
           {createRow(1)}
           {createRow(2)}
+
+          <Text>
+            {textResult}
+          </Text>
 
         </SafeAreaView>
     </SafeAreaProvider>
@@ -70,7 +121,7 @@ const styles = StyleSheet.create({
     width: outerRadi,
     height: outerRadi,
     borderRadius: outerRadi / 2,
-    margin: 10,
+    marginHorizontal: 15,
     backgroundColor: 'black'
   },
 });
