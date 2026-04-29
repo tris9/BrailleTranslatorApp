@@ -101,7 +101,7 @@ export default function HomeScreen() {
           {createRow(1)}
           {createRow(2)}
 
-          <Text>
+          <Text style={styles.resultText}>
             {textResult}
           </Text>
 
@@ -124,4 +124,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 15,
     backgroundColor: 'black'
   },
+  resultText: {
+    fontSize: 100,
+    marginTop: 25,
+  }
 });
