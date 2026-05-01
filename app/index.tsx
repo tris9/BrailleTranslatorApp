@@ -1,5 +1,5 @@
 import React, {useRef, useState} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {View, Text, Pressable, StyleSheet, Button, TouchableOpacity} from 'react-native';
 import {SafeAreaView, SafeAreaProvider} from 'react-native-safe-area-context';
 
 const innerRadi = 95;
@@ -43,13 +43,14 @@ const dotsToText: Record<string,string> = {
   };
 
 export default function HomeScreen() {
-  const [buttons, onButtonsChanged] = useState(new Array(6).fill(Color.White));
+  const [buttons, setDotButtons] = useState(new Array(6).fill(Color.White));
   const [textResult, setTextResult] = useState('');
+  const [savedText, setSavedText] = useState('');
 
   const handlePress = (idx: number) => {
     const newButtons = [...buttons];
     newButtons[idx] = newButtons[idx] === Color.White ? Color.Black : Color.White;
-    onButtonsChanged(newButtons);
+    setDotButtons(newButtons);
 
     setTextResult(buttonsToChar(newButtons));
 
@@ -92,6 +93,16 @@ export default function HomeScreen() {
     console.log("Binary dots:", binaryDots);
     return dotsToText[binaryDots];
   };
+
+  const handleEnterButton = () => {
+    let newText: string = "";
+    if (textResult) {
+      newText = savedText + textResult;
+      setSavedText(newText);
+      setTextResult('');
+      setDotButtons(new Array(6).fill(Color.White));
+    }
+  };
   
   return (
     <SafeAreaProvider>
@@ -101,8 +112,18 @@ export default function HomeScreen() {
           {createRow(1)}
           {createRow(2)}
 
-          <Text style={styles.resultText}>
-            {textResult}
+          <View style={{ flexDirection: 'row'}}>
+            <Text style={styles.resultText}>
+              {textResult}
+            </Text>
+
+            <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterButton()}>
+              <Text>Enter</Text>
+            </TouchableOpacity>
+          </View>
+
+          <Text style={styles.savedText}>
+            {savedText}
           </Text>
 
         </SafeAreaView>
@@ -126,6 +147,21 @@ const styles = StyleSheet.create({
   },
   resultText: {
     fontSize: 100,
-    marginTop: 25,
-  }
+    flex: 1,
+    textAlign: 'center',
+    textAlignVertical: 'center',
+  },
+  savedText: {
+    fontSize: 25,
+    marginTop: 75,
+  },
+  enterButton: {
+    paddingVertical: 35,
+    paddingHorizontal: 35,
+    borderRadius: 30,
+    backgroundColor: 'teal',
+    position: 'absolute',
+    right: 10,
+    alignSelf: 'center'
+  },
 });
