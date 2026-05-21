@@ -158,6 +158,10 @@ const handleBackButton = () => {
           </TouchableOpacity>
         </View>
 
+        <View style={styles.savedTextArea}>
+          <Text style={styles.savedText}>{savedText}</Text>
+        </View>
+
         <TouchableOpacity style={styles.clearButton} onPress={() => handleClearButton()} >
           <Text style={styles.clearButtonText}>☒</Text>
         </TouchableOpacity>
@@ -166,10 +170,6 @@ const handleBackButton = () => {
           <Text style={styles.clearButtonText}>⌫</Text>
         </TouchableOpacity>
 
-
-        <View style={styles.savedTextArea}>
-          <Text style={styles.savedText}>{savedText}</Text>
-        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -198,21 +198,21 @@ const styles = StyleSheet.create({
   savedTextArea: {
     borderRadius: 25,
     padding: 10,
-    marginTop: 75,
+    top: 10,
     position: "center",
     backgroundColor: 'lightgray'
 
   },
   savedText: {
-    fontSize: 25,
+    fontSize: 40,
   },
   clearButton: {
     paddingHorizontal: 10,
     borderRadius: 20,
     backgroundColor: "tomato",
     position: "absolute",
-    right: 300,
-    top: 750,
+    left: 25,
+    bottom: -50,
     alignSelf: "center",
   },
   clearButtonText: {
@@ -223,8 +223,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "khaki",
     position: "absolute",
-    right: 50,
-    top: 750,
+    right: 25,
+    bottom: -50,
     alignSelf: "center",
   },
   backButtonText: {
@@ -235,7 +235,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "teal",
     position: "absolute",
-    right: 10,
+    right: 25,
     alignSelf: "center",
   },
   enterButtonText: {
@@ -246,7 +246,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "lightsteelblue",
     position: "absolute",
-    right: 350,
+    top: 10,
+    left: 25,
     alignSelf: "center",
   },
   navButtonText: {
