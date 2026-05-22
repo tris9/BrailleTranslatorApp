@@ -33,7 +33,6 @@ yarn-error.*
 # local env files
 .env*.local
 /.vscode
-/.idea
 .gitignore
 # typescript
 *.tsbuildinfo
