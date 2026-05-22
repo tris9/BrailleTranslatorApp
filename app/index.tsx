@@ -55,6 +55,7 @@ const dotsToText: Record<string, string> = {
   "010111": "#",
   "010110": "@",
   "001111": "=",
+  "000000": " ",
 };
 
 export default function HomeScreen() {
@@ -146,15 +147,17 @@ const handleBackButton = () => {
           <Text style={styles.navButtonText}>⇋</Text>
         </TouchableOpacity>
 
-        {createRow(0)}
-        {createRow(1)}
-        {createRow(2)}
+        <View style={{ top: 20 }}>
+          {createRow(0)}
+          {createRow(1)}
+          {createRow(2)}
+        </View>
 
         <View style={{ flexDirection: "row" }}>
           <Text style={styles.resultText}>{textResult}</Text>
 
           <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterButton()} >
-            <Text style={styles.enterButtonText}>↵</Text>
+            <Text style={styles.enterButtonText}>↲</Text>
           </TouchableOpacity>
         </View>
 
@@ -198,7 +201,7 @@ const styles = StyleSheet.create({
   savedTextArea: {
     borderRadius: 25,
     padding: 10,
-    top: 10,
+    top: 20,
     position: "center",
     backgroundColor: 'lightgray'
 
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     backgroundColor: "tomato",
     position: "absolute",
     left: 25,
-    bottom: -50,
+    bottom: -75,
     alignSelf: "center",
   },
   clearButtonText: {
@@ -224,33 +227,33 @@ const styles = StyleSheet.create({
     backgroundColor: "khaki",
     position: "absolute",
     right: 25,
-    bottom: -50,
+    bottom: -75,
     alignSelf: "center",
   },
   backButtonText: {
     fontSize: 50,
   },
   enterButton: {
-    paddingHorizontal: 20,
+    paddingHorizontal: 10,
     borderRadius: 30,
     backgroundColor: "teal",
     position: "absolute",
     right: 25,
-    alignSelf: "center",
   },
   enterButtonText: {
     fontSize: 100,
-    bottom: 25,
+    bottom: 10,
   },
   navButton: {
     borderRadius: 20,
     backgroundColor: "lightsteelblue",
     position: "absolute",
-    top: 10,
+    top: 5,
     left: 25,
     alignSelf: "center",
   },
   navButtonText: {
     fontSize: 50,
+    bottom: 7,
   }
 });

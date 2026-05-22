@@ -5,31 +5,31 @@ import { useRouter } from 'expo-router';
 
 const textToBraille: Record<string, string> = {
   "a":"⠁",
-  "b":"",
-  "c":"",
-  "d":"",
-  "e":"",
-  "f":"",
-  "g":"",
-  "h":"",
-  "i":"",
-  "j":"",
-  "k":"",
-  "l":"",
-  "m":"",
-  "n":"",
-  "o":"",
-  "p":"",
-  "q":"",
-  "r":"",
-  "s":"",
-  "t":"",
-  "u":"",
-  "v":"",
-  "w":"",
-  "x":"",
-  "y":"",
-  "z":"",
+  "b":"⠃",
+  "c":"⠉",
+  "d":"⠙",
+  "e":"⠑",
+  "f":"⠋",
+  "g":"⠛",
+  "h":"⠓",
+  "i":"⠊",
+  "j":"⠚",
+  "k":"⠅",
+  "l":"⠇",
+  "m":"⠍",
+  "n":"⠝",
+  "o":"⠕",
+  "p":"⠏",
+  "q":"⠟",
+  "r":"⠗",
+  "s":"⠎",
+  "t":"⠞",
+  "u":"⠥",
+  "v":"⠧",
+  "w":"⠺",
+  "x":"⠭",
+  "y":"⠽",
+  "z":"⠵",
   ".":"",
   ",":"",
   "!":"",
@@ -44,19 +44,22 @@ const textToBraille: Record<string, string> = {
   "#":"",
   "@":"",
   "=":"",
+  " ":"⠀",
 }
 
 export default function TextScreen() {
   const [text, onChangeText] = React.useState('');
-  const brailleResult = "";
+  const [brailleText, setBrailleText] = React.useState('');
 
   const router = useRouter();
 
-  const onChangeText = () => {
-    brailleResult = "";
+  const changeTextToBraille = () => {
+    let brailleResult = "";
     for (const char of text){
       brailleResult += textToBraille[char];
+      console.log("Char: ", char)
     }
+    setBrailleText(brailleResult)
   }
 
   return (
@@ -67,14 +70,17 @@ export default function TextScreen() {
           <Text style={styles.navButtonText}>⇋</Text>
         </TouchableOpacity>
 
-        <TextInput
-          style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-        />
+        <View style={{ top: 75 }}>
+          <TextInput
+            style={styles.input}
+            onChangeText={onChangeText}
+            value={text}
+          />
+          <TouchableOpacity style={styles.enterButton} onPress={() => changeTextToBraille()} >
+            <Text style={styles.enterButtonText}>⇓</Text>
+          </TouchableOpacity>
 
-        <View>
-          <Text>{brailleResult}</Text>
+          <Text style={styles.brailleResult}>{brailleText}</Text>
         </View>
 
       </SafeAreaView>
@@ -84,11 +90,32 @@ export default function TextScreen() {
 
 const styles = StyleSheet.create({
   input: {
-      height: 40,
+      borderRadius: 20,
+      height: 80,
+      width: 250,
       margin: 12,
       borderWidth: 1,
       padding: 10,
+      top: 50,
+      fontSize: 50,
+      alignSelf: 'center',
     },
+  backButtonText: {
+      fontSize: 50,
+    },
+  enterButton: {
+    paddingHorizontal: 20,
+    borderRadius: 30,
+    backgroundColor: "teal",
+    position: "center",
+    alignSelf: 'center',
+    right: 0,
+    top: 100,
+  },
+ enterButtonText: {
+    fontSize: 100,
+    bottom: 25,
+  },
   navButton: {
       borderRadius: 20,
       backgroundColor: "lightsteelblue",
@@ -99,5 +126,14 @@ const styles = StyleSheet.create({
     },
     navButtonText: {
       fontSize: 50,
+      bottom: 7,
+    },
+    brailleResult: {
+      fontSize: 50,
+      top: 150,
+      paddingHorizontal: 25,
+      paddingVertical: 5,
+      backgroundColor: 'lightgrey',
+      borderRadius: 20,
     }
   });
