@@ -142,7 +142,28 @@ export default function HomeScreen() {
             {savedText}
           </Text>
 
+<<<<<<< HEAD
         </SafeAreaView>
+=======
+          <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterButton()} >
+            <Text style={styles.enterButtonText}>↵</Text>
+          </TouchableOpacity>
+        </View>
+
+        <TouchableOpacity style={styles.clearButton} onPress={() => handleClearButton()} >
+          <Text style={styles.clearButtonText}>☒</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.backButton} onPress={() => handleBackButton()} >
+          <Text style={styles.clearButtonText}>⌫</Text>
+        </TouchableOpacity>
+
+
+        <View style={styles.savedTextArea}>
+          <Text style={styles.savedText}>{savedText}</Text>
+        </View>
+      </SafeAreaView>
+>>>>>>> parent of c5c3c983 (moved buttons and started text page)
     </SafeAreaProvider>
   );
 }
@@ -164,20 +185,82 @@ const styles = StyleSheet.create({
   resultText: {
     fontSize: 100,
     flex: 1,
+<<<<<<< HEAD
     textAlign: 'center',
     textAlignVertical: 'center',
   },
   savedText: {
     fontSize: 25,
     marginTop: 75,
+=======
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+  savedTextArea: {
+    borderRadius: 25,
+    padding: 10,
+    marginTop: 75,
+    position: "center",
+    backgroundColor: 'lightgray'
+
+  },
+  savedText: {
+    fontSize: 25,
+  },
+  clearButton: {
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    backgroundColor: "tomato",
+    position: "absolute",
+    right: 300,
+    top: 750,
+    alignSelf: "center",
+  },
+  clearButtonText: {
+    fontSize: 50,
+  },
+  backButton: {
+    paddingHorizontal: 10,
+    borderRadius: 20,
+    backgroundColor: "khaki",
+    position: "absolute",
+    right: 50,
+    top: 750,
+    alignSelf: "center",
+  },
+  backButtonText: {
+    fontSize: 50,
+>>>>>>> parent of c5c3c983 (moved buttons and started text page)
   },
   enterButton: {
     paddingVertical: 35,
     paddingHorizontal: 35,
     borderRadius: 30,
+<<<<<<< HEAD
     backgroundColor: 'teal',
     position: 'absolute',
     right: 10,
     alignSelf: 'center'
   },
+=======
+    backgroundColor: "teal",
+    position: "absolute",
+    right: 10,
+    alignSelf: "center",
+  },
+  enterButtonText: {
+    fontSize: 100,
+    bottom: 25,
+  },
+  navButton: {
+    borderRadius: 20,
+    backgroundColor: "lightsteelblue",
+    position: "absolute",
+    right: 350,
+    alignSelf: "center",
+  },
+  navButtonText: {
+    fontSize: 50,
+  }
+>>>>>>> parent of c5c3c983 (moved buttons and started text page)
 });
