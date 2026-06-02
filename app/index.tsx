@@ -1,10 +1,18 @@
 import React, { useRef, useState } from "react";
-import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity,} from "react-native";
+import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, Dimensions} from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
 
-const innerRadi = 95;
-const outerRadi = 100;
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
+const dotScaleFactor = 4;
+const dotLineWidth = 5;
+const dotHorizontalSpacing = windowWidth*0.01;
+const dotVerticalSpacing = windowHeight*0.03;
+
+const outerRadi = windowWidth/dotScaleFactor;
+const innerRadi = outerRadi - dotLineWidth;
 
 const ROW_SIZE = 2;
 const ROWS = 3;
@@ -85,25 +93,20 @@ export default function HomeScreen() {
   const createRow = (row: number) => {
     const idx = row * ROW_SIZE;
     return (
-      <SafeAreaView style={{ flexDirection: "row" }}>
+      <View style={{ flexDirection: "row" }}>
         <Pressable onPress={() => handlePress(idx)}>
           <View style={styles.outerCircle}>
-            <View
-              style={{ ...styles.innerCircle, backgroundColor: buttons[idx] }}
-            ></View>
+            <View style={{ ...styles.innerCircle, backgroundColor: buttons[idx] }} >
+            </View>
           </View>
         </Pressable>
         <Pressable onPress={() => handlePress(idx + 1)}>
           <View style={styles.outerCircle}>
-            <View
-              style={{
-                ...styles.innerCircle,
-                backgroundColor: buttons[idx + 1],
-              }}
-            ></View>
+            <View style={{ ...styles.innerCircle, backgroundColor: buttons[idx + 1] }} >
+            </View>
           </View>
         </Pressable>
-      </SafeAreaView>
+      </View>
     );
   };
 
@@ -114,7 +117,7 @@ export default function HomeScreen() {
    */
   const buttonsToChar = (buttonArr: Array<Color>): string => {
     let binaryDots: string = buttonArr.map((n) => Object.values(Color).indexOf(n)).join("");
-    console.log("Binary dots:", binaryDots);
+    //console.log("Binary dots:", binaryDots);
     return dotsToText[binaryDots];
   };
 
@@ -122,10 +125,12 @@ export default function HomeScreen() {
     let newText: string = "";
     if (textResult) {
       newText = savedText + textResult;
-      setSavedText(newText);
-      setTextResult("");
-      setDotButtons(new Array(6).fill(Color.White));
+    } else {
+      newText = savedText + " ";
     }
+    setSavedText(newText);
+    setTextResult("");
+    setDotButtons(new Array(6).fill(Color.White));
   };
 
 const handleClearButton = () => {
@@ -141,16 +146,22 @@ const handleBackButton = () => {
 
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flexDirection: "column", alignItems: "center", top: 50 }} >
+      <View style={{ flexDirection: "column", alignItems: "center" }} >
 
         <TouchableOpacity style={styles.navButton} onPress={() => router.navigate('/text')} >
           <Text style={styles.navButtonText}>⇋</Text>
         </TouchableOpacity>
 
-        <View style={{ top: 20 }}>
-          {createRow(0)}
-          {createRow(1)}
-          {createRow(2)}
+        <View>
+          <View style={{ marginTop: windowHeight*0.12 }}>
+            {createRow(0)}
+          </View>
+          <View style={{ marginTop: dotVerticalSpacing }}>
+            {createRow(1)}
+          </View>
+          <View style={{ marginTop: dotVerticalSpacing }}>
+            {createRow(2)}
+          </View>
         </View>
 
         <View style={{ flexDirection: "row" }}>
@@ -173,7 +184,7 @@ const handleBackButton = () => {
           <Text style={styles.clearButtonText}>⌫</Text>
         </TouchableOpacity>
 
-      </SafeAreaView>
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -183,13 +194,13 @@ const styles = StyleSheet.create({
     width: innerRadi,
     height: innerRadi,
     borderRadius: innerRadi / 2,
-    margin: (outerRadi - innerRadi) / 2,
+    margin: dotLineWidth/2,
   },
   outerCircle: {
     width: outerRadi,
     height: outerRadi,
     borderRadius: outerRadi / 2,
-    marginHorizontal: 15,
+    marginHorizontal: dotHorizontalSpacing,
     backgroundColor: "black",
   },
   resultText: {
@@ -201,8 +212,8 @@ const styles = StyleSheet.create({
   savedTextArea: {
     borderRadius: 25,
     padding: 10,
-    top: 20,
-    position: "center",
+    position: "absolute",
+    top: windowHeight*0.75,
     backgroundColor: 'lightgray'
 
   },
@@ -214,9 +225,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "tomato",
     position: "absolute",
-    left: 25,
-    bottom: -75,
-    alignSelf: "center",
+    left: windowWidth*0.05,
+    top: windowHeight*0.87,
   },
   clearButtonText: {
     fontSize: 50,
@@ -226,9 +236,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "khaki",
     position: "absolute",
-    right: 25,
-    bottom: -75,
-    alignSelf: "center",
+    right: windowWidth*0.05,
+    top: windowHeight*0.87,
   },
   backButtonText: {
     fontSize: 50,
@@ -238,7 +247,7 @@ const styles = StyleSheet.create({
     borderRadius: 30,
     backgroundColor: "teal",
     position: "absolute",
-    right: 25,
+    right: windowWidth*0.05,
   },
   enterButtonText: {
     fontSize: 100,
@@ -248,8 +257,8 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: "lightsteelblue",
     position: "absolute",
-    top: 5,
-    left: 25,
+    top: windowWidth*0.10,
+    left: windowWidth*0.05,
     alignSelf: "center",
   },
   navButtonText: {
