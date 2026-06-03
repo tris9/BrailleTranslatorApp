@@ -8,8 +8,8 @@ const windowHeight = Dimensions.get('window').height;
 
 const dotScaleFactor = 4;
 const dotLineWidth = 5;
-const dotHorizontalSpacing = windowWidth*0.01;
-const dotVerticalSpacing = windowHeight*0.03;
+const dotHorizontalSpacing = windowWidth*0.02;
+const dotVerticalSpacing = windowHeight*0.02;
 
 const outerRadi = windowWidth/dotScaleFactor;
 const innerRadi = outerRadi - dotLineWidth;
@@ -122,12 +122,7 @@ export default function HomeScreen() {
   };
 
   const handleEnterButton = () => {
-    let newText: string = "";
-    if (textResult) {
-      newText = savedText + textResult;
-    } else {
-      newText = savedText + " ";
-    }
+    let newText: string = textResult ? savedText + textResult : savedText + " ";
     setSavedText(newText);
     setTextResult("");
     setDotButtons(new Array(6).fill(Color.White));
@@ -153,7 +148,7 @@ const handleBackButton = () => {
         </TouchableOpacity>
 
         <View>
-          <View style={{ marginTop: windowHeight*0.12 }}>
+          <View style={{ marginTop: windowHeight*0.1 }}>
             {createRow(0)}
           </View>
           <View style={{ marginTop: dotVerticalSpacing }}>
@@ -164,13 +159,11 @@ const handleBackButton = () => {
           </View>
         </View>
 
-        <View style={{ flexDirection: "row" }}>
-          <Text style={styles.resultText}>{textResult}</Text>
+        <Text style={styles.resultText}>{textResult}</Text>
 
-          <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterButton()} >
-            <Text style={styles.enterButtonText}>↲</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity style={styles.enterButton} onPress={() => handleEnterButton()} >
+          <Text style={styles.enterButtonText}>↲</Text>
+        </TouchableOpacity>
 
         <View style={styles.savedTextArea}>
           <Text style={styles.savedText}>{savedText}</Text>
@@ -181,7 +174,7 @@ const handleBackButton = () => {
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.backButton} onPress={() => handleBackButton()} >
-          <Text style={styles.clearButtonText}>⌫</Text>
+          <Text style={styles.backButtonText}>⌫</Text>
         </TouchableOpacity>
 
       </View>
@@ -204,24 +197,26 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
   },
   resultText: {
-    fontSize: 100,
-    flex: 1,
+    fontSize: windowWidth*0.3,
+    position: "absolute",
+    top: windowHeight*0.52,
+    alignItems: 'center',
     textAlign: "center",
     textAlignVertical: "center",
   },
   savedTextArea: {
     borderRadius: 25,
-    padding: 10,
+    paddingHorizontal: windowWidth*0.05,
     position: "absolute",
-    top: windowHeight*0.75,
+    top: windowHeight*0.78,
     backgroundColor: 'lightgray'
 
   },
   savedText: {
-    fontSize: 40,
+    fontSize: windowWidth*0.1,
   },
   clearButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: windowWidth*0.05,
     borderRadius: 20,
     backgroundColor: "tomato",
     position: "absolute",
@@ -229,10 +224,10 @@ const styles = StyleSheet.create({
     top: windowHeight*0.87,
   },
   clearButtonText: {
-    fontSize: 50,
+    fontSize: windowWidth*0.12,
   },
   backButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: windowWidth*0.05,
     borderRadius: 20,
     backgroundColor: "khaki",
     position: "absolute",
@@ -240,29 +235,29 @@ const styles = StyleSheet.create({
     top: windowHeight*0.87,
   },
   backButtonText: {
-    fontSize: 50,
+    fontSize: windowWidth*0.12,
   },
   enterButton: {
-    paddingHorizontal: 10,
+    paddingHorizontal: windowWidth*0.03,
     borderRadius: 30,
     backgroundColor: "teal",
     position: "absolute",
     right: windowWidth*0.05,
+    top: windowHeight*0.55,
   },
   enterButtonText: {
-    fontSize: 100,
-    bottom: 10,
+    fontSize: windowWidth*0.20,
   },
   navButton: {
+    paddingHorizontal: windowWidth*0.01,
     borderRadius: 20,
     backgroundColor: "lightsteelblue",
     position: "absolute",
-    top: windowWidth*0.10,
+    top: windowHeight*0.05,
     left: windowWidth*0.05,
     alignSelf: "center",
   },
   navButtonText: {
-    fontSize: 50,
-    bottom: 7,
+    fontSize: windowWidth*0.1,
   }
 });

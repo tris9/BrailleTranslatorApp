@@ -1,7 +1,10 @@
 import React, { useRef, useState } from "react";
-import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, TextInput} from "react-native";
+import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, TextInput, Dimensions} from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
 
 const textToBraille: Record<string, string> = {
   "a":"⠁",
@@ -30,20 +33,20 @@ const textToBraille: Record<string, string> = {
   "x":"⠭",
   "y":"⠽",
   "z":"⠵",
-  ".":"",
-  ",":"",
-  "!":"",
-  "?":"",
-  ":":"",
-  ";":"",
-  "-":"",
-  "/":"",
-  "\\":"",
-  "'":"",
-  "*":"",
-  "#":"",
-  "@":"",
-  "=":"",
+  ".":"⠲",
+  ",":"⠂",
+  "!":"⠖",
+  "?":"⠦",
+  ":":"⠒",
+  ";":"⠆",
+  "-":"⠤",
+  "/":"⠌",
+  "\\":"⠡",
+  "'":"⠄",
+  "*":"⠔",
+  "#":"⠼",
+  "@":"⠜",
+  "=":"⠶",
   " ":"⠀",
 }
 
@@ -55,35 +58,31 @@ export default function TextScreen() {
 
   const changeTextToBraille = () => {
     let brailleResult = "";
-    for (const char of text){
-      brailleResult += textToBraille[char];
-      console.log("Char: ", char)
+    for (const char of text.toLowerCase()){
+      brailleResult += textToBraille[char] === undefined ? '☐' : textToBraille[char];
+      //console.log("Char: ", char)
     }
     setBrailleText(brailleResult)
   }
 
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flexDirection: "column", alignItems: "center", top: 50 }} >
+    <SafeAreaProvider style={{ flexDirection: "column", alignItems: "center"}}>
+      <TouchableOpacity style={styles.navButton} onPress={() => router.back()} >
+        <Text style={styles.navButtonText}>⇋</Text>
+      </TouchableOpacity>
 
-        <TouchableOpacity style={styles.navButton} onPress={() => router.back()} >
-          <Text style={styles.navButtonText}>⇋</Text>
+      <View style={{ top: windowHeight*0.1 }}>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+        />
+        <TouchableOpacity style={styles.enterButton} onPress={() => changeTextToBraille()} >
+          <Text style={styles.enterButtonText}>⇓</Text>
         </TouchableOpacity>
 
-        <View style={{ top: 75 }}>
-          <TextInput
-            style={styles.input}
-            onChangeText={onChangeText}
-            value={text}
-          />
-          <TouchableOpacity style={styles.enterButton} onPress={() => changeTextToBraille()} >
-            <Text style={styles.enterButtonText}>⇓</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.brailleResult}>{brailleText}</Text>
-        </View>
-
-      </SafeAreaView>
+        <Text style={styles.brailleResult}>{brailleText}</Text>
+      </View>
     </SafeAreaProvider>
   );
 }
@@ -91,48 +90,45 @@ export default function TextScreen() {
 const styles = StyleSheet.create({
   input: {
       borderRadius: 20,
-      height: 80,
-      width: 250,
-      margin: 12,
+      height: windowHeight*0.1,
+      width: windowWidth*0.7,
       borderWidth: 1,
-      padding: 10,
-      top: '15%',
-      fontSize: 50,
+      padding: 15,
+      top: windowHeight*0.1,
+      fontSize: windowHeight*0.04,
       alignSelf: 'center',
     },
-  backButtonText: {
-      fontSize: 50,
-    },
   enterButton: {
-    paddingHorizontal: 20,
+    paddingHorizontal: windowWidth*0.05,
     borderRadius: 30,
     backgroundColor: "teal",
     position: "center",
     alignSelf: 'center',
-    top: '30%',
+    top: windowHeight*0.15,
   },
  enterButtonText: {
-    fontSize: 100,
-    bottom: 15,
+    fontSize: windowWidth*0.3,
+    bottom: windowHeight*0.02,
   },
   navButton: {
-      borderRadius: 20,
-      backgroundColor: "lightsteelblue",
-      position: "absolute",
-      top: '1%',
-      left: '5%',
-      alignSelf: "center",
-    },
-    navButtonText: {
-      fontSize: 50,
-      bottom: 7,
-    },
-    brailleResult: {
-      fontSize: 50,
-      top: '45%',
-      paddingHorizontal: 25,
-      paddingVertical: 5,
-      backgroundColor: 'lightgrey',
-      borderRadius: 20,
-    }
+    paddingHorizontal: windowWidth*0.01,
+    borderRadius: 20,
+    backgroundColor: "lightsteelblue",
+    position: "absolute",
+    top: windowHeight*0.05,
+    left: windowWidth*0.05,
+    alignSelf: "center",
+  },
+  navButtonText: {
+    fontSize: windowWidth*0.1,
+  },
+  brailleResult: {
+    fontSize: windowWidth*0.1,
+    top: windowHeight*0.2,
+    paddingHorizontal: windowWidth*0.01,
+    paddingVertical: windowHeight*0.02,
+    backgroundColor: 'lightgrey',
+    borderRadius: 20,
+    selectable: true,
+  }
   });
