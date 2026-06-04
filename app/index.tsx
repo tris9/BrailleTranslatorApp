@@ -66,6 +66,19 @@ const dotsToText: Record<string, string> = {
   "000000": " ",
 };
 
+const brailleTextToNumber: Record<string, string> = {
+  "a":"1",
+  "b":"2",
+  "c":"3",
+  "d":"4",
+  "e":"5",
+  "f":"6",
+  "g":"7",
+  "h":"8",
+  "i":"9",
+  "j":"0",
+};
+
 export default function HomeScreen() {
   const [buttons, setDotButtons] = useState(new Array(6).fill(Color.White));
   const [textResult, setTextResult] = useState("");
@@ -121,8 +134,48 @@ export default function HomeScreen() {
     return dotsToText[binaryDots];
   };
 
+  const isCharAlphaNum = (char: string): boolean => {
+    return char >= 'a' && char <= 'j';
+  };
+
+  const charToNum = (char: string): string => {
+    if(char.length == 1){
+      return brailleTextToNumber[char];
+    } else {
+      return "";
+    }
+  };
+
+  const handleCompound = () => {
+    let compoundStr = savedText;
+    for(let i = 0; i < savedText.length; i++){
+      // Number case
+      if (savedText[i] == '#'){
+        let hashIndex: int = i;
+        i++;
+
+        let charNum: string = "";
+        while (isCharAlphaNum(savedText[i]) && i < savedText.length) {
+          charNum += charToNum(savedText[i]);
+          i++;
+        };
+        let substr: string = savedText.substring(hashIndex,i);
+
+        if(substr.length > 1 && isCharAlphaNum(substr[1])){
+          compoundStr = compoundStr.replace(substr,charNum);
+          i--;
+        }
+      };
+    };
+
+    //console.log("Compound String: ", compoundStr);
+
+    setSavedText(compoundStr);
+  };
+
   const handleEnterButton = () => {
     let newText: string = textResult ? savedText + textResult : savedText + " ";
+
     setSavedText(newText);
     setTextResult("");
     setDotButtons(new Array(6).fill(Color.White));
@@ -165,9 +218,11 @@ const handleBackButton = () => {
           <Text style={styles.enterButtonText}>↲</Text>
         </TouchableOpacity>
 
-        <View style={styles.savedTextArea}>
-          <Text style={styles.savedText}>{savedText}</Text>
-        </View>
+        <TouchableOpacity style={styles.savedTextArea} onPress={() => handleCompound()}>
+          <View >
+            <Text style={styles.savedText}>{savedText}</Text>
+          </View>
+        </TouchableOpacity>
 
         <TouchableOpacity style={styles.clearButton} onPress={() => handleClearButton()} >
           <Text style={styles.clearButtonText}>☒</Text>
@@ -176,7 +231,6 @@ const handleBackButton = () => {
         <TouchableOpacity style={styles.backButton} onPress={() => handleBackButton()} >
           <Text style={styles.backButtonText}>⌫</Text>
         </TouchableOpacity>
-
       </View>
     </SafeAreaProvider>
   );

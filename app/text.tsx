@@ -81,7 +81,7 @@ export default function TextScreen() {
           <Text style={styles.enterButtonText}>⇓</Text>
         </TouchableOpacity>
 
-        <Text style={styles.brailleResult}>{brailleText}</Text>
+        <Text selectable={true} style={styles.brailleResult}>{brailleText}</Text>
       </View>
     </SafeAreaProvider>
   );
@@ -129,6 +129,5 @@ const styles = StyleSheet.create({
     paddingVertical: windowHeight*0.02,
     backgroundColor: 'lightgrey',
     borderRadius: 20,
-    selectable: true,
   }
   });
