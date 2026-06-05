@@ -104,8 +104,16 @@ export const brailleTextToNumber: Record<string, string> = {
   "j":"0",
 };
 
+export const getBrailleTextToNumberKeyByValue = (char: string): string => {
+  return Object.keys(brailleTextToNumber).find(k => brailleTextToNumber[k] === char);
+};
+
 export const isCharAlphaNum = (char: string): boolean => {
   return char >= 'a' && char <= 'j';
+};
+
+export const isCharNum = (char: string): boolean => {
+  return char >= '0' && char <= '9';
 };
 
 export const charToNum = (char: string): string => {

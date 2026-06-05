@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, TextInput} from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
-import {isCharAlphaNum, charToNum, textToBraille, windowWidth, windowHeight} from './utils';
+import {isCharAlphaNum, charToNum, isCharNum, textToBraille, getBrailleTextToNumberKeyByValue, windowWidth, windowHeight} from './utils';
 
 export default function TextScreen() {
   const [text, onChangeText] = React.useState('');
@@ -13,11 +13,22 @@ export default function TextScreen() {
   const changeTextToBraille = () => {
     let brailleResult = "";
     const lowerText: string = text.toLowerCase();
-    for (const char of lowerText){
-      brailleResult += textToBraille[char] === undefined ? '☐' : textToBraille[char];
-    }
+    for (let i = 0; i < lowerText.length; i++){
+
+      if (isCharNum(lowerText[i])){
+        brailleResult += textToBraille["#"];
+        while(isCharNum(lowerText[i]) && i < lowerText.length){
+          brailleResult += textToBraille[getBrailleTextToNumberKeyByValue(lowerText[i])];
+          i++;
+        };
+        i--;
+      } else {
+        console.log("Char: ", lowerText[i])
+        brailleResult += textToBraille[lowerText[i]] === undefined ? '☐' : textToBraille[lowerText[i]];
+      };
+    };
     setBrailleText(brailleResult)
-  }
+  };
 
   return (
     <SafeAreaProvider style={{ flexDirection: "column", alignItems: "center"}}>
