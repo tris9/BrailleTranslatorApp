@@ -1,54 +1,8 @@
 import React, { useRef, useState } from "react";
-import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, TextInput, Dimensions} from "react-native";
+import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, TextInput} from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const textToBraille: Record<string, string> = {
-  "a":"⠁",
-  "b":"⠃",
-  "c":"⠉",
-  "d":"⠙",
-  "e":"⠑",
-  "f":"⠋",
-  "g":"⠛",
-  "h":"⠓",
-  "i":"⠊",
-  "j":"⠚",
-  "k":"⠅",
-  "l":"⠇",
-  "m":"⠍",
-  "n":"⠝",
-  "o":"⠕",
-  "p":"⠏",
-  "q":"⠟",
-  "r":"⠗",
-  "s":"⠎",
-  "t":"⠞",
-  "u":"⠥",
-  "v":"⠧",
-  "w":"⠺",
-  "x":"⠭",
-  "y":"⠽",
-  "z":"⠵",
-  ".":"⠲",
-  ",":"⠂",
-  "!":"⠖",
-  "?":"⠦",
-  ":":"⠒",
-  ";":"⠆",
-  "-":"⠤",
-  "/":"⠌",
-  "\\":"⠡",
-  "'":"⠄",
-  "*":"⠔",
-  "#":"⠼",
-  "@":"⠜",
-  "=":"⠶",
-  " ":"⠀",
-}
+import {isCharAlphaNum, charToNum, textToBraille, windowWidth, windowHeight} from './utils';
 
 export default function TextScreen() {
   const [text, onChangeText] = React.useState('');
@@ -58,9 +12,9 @@ export default function TextScreen() {
 
   const changeTextToBraille = () => {
     let brailleResult = "";
-    for (const char of text.toLowerCase()){
+    const lowerText: string = text.toLowerCase();
+    for (const char of lowerText){
       brailleResult += textToBraille[char] === undefined ? '☐' : textToBraille[char];
-      //console.log("Char: ", char)
     }
     setBrailleText(brailleResult)
   }

@@ -1,10 +1,8 @@
 import React, { useRef, useState } from "react";
-import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity, Dimensions} from "react-native";
+import { View, Text, Pressable, StyleSheet, Button, TouchableOpacity} from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
 import { useRouter } from 'expo-router';
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+import {isCharAlphaNum, charToNum, dotsToText, windowWidth, windowHeight} from "./utils";
 
 const dotScaleFactor = 4;
 const dotLineWidth = 5;
@@ -22,62 +20,9 @@ enum Color {
   Black = "black",
 }
 
-const dotsToText: Record<string, string> = {
-  "100000": "a",
-  "101000": "b",
-  "110000": "c",
-  "110100": "d",
-  "100100": "e",
-  "111000": "f",
-  "111100": "g",
-  "101100": "h",
-  "011000": "i",
-  "011100": "j",
-  "100010": "k",
-  "101010": "l",
-  "110010": "m",
-  "110110": "n",
-  "100110": "o",
-  "111010": "p",
-  "111110": "q",
-  "101110": "r",
-  "011010": "s",
-  "011110": "t",
-  "100011": "u",
-  "101011": "v",
-  "011101": "w",
-  "110011": "x",
-  "110111": "y",
-  "100111": "z",
-  "001101": ".",
-  "001000": ",",
-  "001110": "!",
-  "001011": "?",
-  "001100": ":",
-  "001010": ";",
-  "000011": "-",
-  "010010": "/",
-  "100001": "\\",
-  "000010": "'",
-  "000110": "*",
-  "010111": "#",
-  "010110": "@",
-  "001111": "=",
-  "000000": " ",
-};
 
-const brailleTextToNumber: Record<string, string> = {
-  "a":"1",
-  "b":"2",
-  "c":"3",
-  "d":"4",
-  "e":"5",
-  "f":"6",
-  "g":"7",
-  "h":"8",
-  "i":"9",
-  "j":"0",
-};
+
+
 
 export default function HomeScreen() {
   const [buttons, setDotButtons] = useState(new Array(6).fill(Color.White));
@@ -134,17 +79,7 @@ export default function HomeScreen() {
     return dotsToText[binaryDots];
   };
 
-  const isCharAlphaNum = (char: string): boolean => {
-    return char >= 'a' && char <= 'j';
-  };
 
-  const charToNum = (char: string): string => {
-    if(char.length == 1){
-      return brailleTextToNumber[char];
-    } else {
-      return "";
-    }
-  };
 
   const handleCompound = () => {
     let compoundStr = savedText;
